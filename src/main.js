@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles.css';
 import $ from 'jquery';
 import { BikeService } from './bikes.js';
+import { GiphyGetter } from './giphy.js';
 
 $(document).ready(function() {
 
@@ -20,7 +21,12 @@ $(document).ready(function() {
     distance = $('#distance').val();
     color1 = $("#color1").val();
     color2 = $("#color2").val();
-
+    let giphyGetter = new GiphyGetter();
+    giphyGetter.getGiphy("loading").then(function(response){
+      let body = JSON.parse(response);
+      let image = body.data.image_url;
+      $("#loadingImage").html(`<img src="${image}">`);
+    });
     showResults();
   });
 
@@ -55,6 +61,7 @@ $(document).ready(function() {
     Promise.all([promise1, promise2]).then(function(){
       $("#count1").text(color1 + ": "+ count1);
       $("#count2").text(color2 + ": "+ count2);
+      $("#loadingImage").empty();
     });
 
 // ===================== chained Promises =====================
