@@ -27,33 +27,63 @@ $(document).ready(function() {
   function showResults(){
     let bikeService = new BikeService();
 
-    // let promise1 = bikeService.getBikeInfo(color1, location, distance);
-    // let promise2 = bikeService.getBikeInfo(color2, location, distance);
-    bikeService.getBikeInfo(color1, location, distance)
-      .then(function(response){
-        let body = JSON.parse(response);
-        console.log(1);
-        console.log(body);
-        if (location === ""){
-          count1 = body.stolen;
-        }
-        else {
-          count1 = body.proximity;
-        }
-        return bikeService.getBikeInfo(color2, location, distance);
-      })
-      .then(function(response){
-        let body = JSON.parse(response);
-        console.log(2);
-        console.log(body);
-        if (location === ""){
-          count2 = body.stolen;
-        }
-        else {
-          count2 = body.proximity;
-        }
-        $("#count1").text(color1 + ": "+ count1);
-        $("#count2").text(color2 + ": "+ count2);
-      });
+    let promise1 = bikeService.getBikeInfo(color1, location, distance);
+    let promise2 = bikeService.getBikeInfo(color2, location, distance);
+    promise1.then(function(response){
+      let body = JSON.parse(response);
+      console.log(1);
+      console.log(body);
+      if (location === ""){
+        count1 = body.stolen;
+      }
+      else {
+        count1 = body.proximity;
+      }
+    });
+    promise2.then(function(response){
+      let body = JSON.parse(response);
+      console.log(2);
+      console.log(body);
+      if (location === ""){
+        count2 = body.stolen;
+      }
+      else {
+        count2 = body.proximity;
+      }
+    });
+
+    Promise.all([promise1, promise2]).then(function(){
+      $("#count1").text(color1 + ": "+ count1);
+      $("#count2").text(color2 + ": "+ count2);
+    });
+
+// ===================== chained Promises =====================
+
+    // bikeService.getBikeInfo(color1, location, distance)
+    //   .then(function(response){
+    //     let body = JSON.parse(response);
+    //     console.log(1);
+    //     console.log(body);
+    //     if (location === ""){
+    //       count1 = body.stolen;
+    //     }
+    //     else {
+    //       count1 = body.proximity;
+    //     }
+    //     return bikeService.getBikeInfo(color2, location, distance);
+    //   })
+    //   .then(function(response){
+    //     let body = JSON.parse(response);
+    //     console.log(2);
+    //     console.log(body);
+    //     if (location === ""){
+    //       count2 = body.stolen;
+    //     }
+    //     else {
+    //       count2 = body.proximity;
+    //     }
+    //     $("#count1").text(color1 + ": "+ count1);
+    //     $("#count2").text(color2 + ": "+ count2);
+    //   });
   }
 });
