@@ -1,4 +1,4 @@
-# _Doctor Lookup_
+# _Stolen bikes statistics_
 
 #### _A web application that shows statistics of stolen bikes, Created 03/28/2019_
 
